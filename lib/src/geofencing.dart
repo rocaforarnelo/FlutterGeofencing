@@ -101,11 +101,8 @@ class GeofencingManager {
   static const MethodChannel _background =
       MethodChannel('plugins.flutter.io/geofencing_plugin_background');
 
-  static Map<String, String> messagesById = Map<String, String>();
-
   /// Initialize the plugin and request relevant permissions from the user.
-  static Future<void> initialize(Map<String, String> messages) async {
-    messagesById = messages;
+  static Future<void> initialize() async {
     final CallbackHandle callback =
         PluginUtilities.getCallbackHandle(callbackDispatcher);
     await _channel.invokeMethod('GeofencingPlugin.initializeService',
@@ -138,7 +135,8 @@ class GeofencingManager {
   /// `GeofenceEvent.dwell` trigger on iOS, `UnsupportedError` is thrown.
   static Future<void> registerGeofence(
       GeofenceRegion region,
-      void Function(List<String> id, Location location, GeofenceEvent event)
+      void Function(List<String> id, String message, Location location,
+              GeofenceEvent event)
           callback) async {
     if (Platform.isIOS &&
         region.triggers.contains(GeofenceEvent.dwell) &&
