@@ -101,8 +101,11 @@ class GeofencingManager {
   static const MethodChannel _background =
       MethodChannel('plugins.flutter.io/geofencing_plugin_background');
 
+  static Map<String, String> messagesById = Map<String, String>();
+
   /// Initialize the plugin and request relevant permissions from the user.
-  static Future<void> initialize() async {
+  static Future<void> initialize(Map<String, String> messages) async {
+    messagesById = messages;
     final CallbackHandle callback =
         PluginUtilities.getCallbackHandle(callbackDispatcher);
     await _channel.invokeMethod('GeofencingPlugin.initializeService',
